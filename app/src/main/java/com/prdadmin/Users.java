@@ -86,4 +86,9 @@ public class Users extends Fragment {
             }
         });
     }
+
+    public void callParentMethod(){
+        getActivity().onBackPressed();
+    }
+
 }

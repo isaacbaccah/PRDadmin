@@ -10,7 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -26,6 +28,8 @@ import java.util.List;
 public class Requests extends Fragment {
 
     private RecyclerView mRequestListView;
+    private String user_id;
+    private FirebaseAuth mAuth;
 
     private List<RequestList> requestList;
     private RequestsRecyclerAdapter requestsRecyclerAdapter;
@@ -56,6 +60,8 @@ public class Requests extends Fragment {
         mRequestListView.setLayoutManager(new LinearLayoutManager(container.getContext()));
         mRequestListView.setAdapter(requestsRecyclerAdapter);
 
+        mAuth = FirebaseAuth.getInstance();
+
 
 
         return view;
@@ -64,6 +70,10 @@ public class Requests extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+
+
+        user_id = mAuth.getCurrentUser().getUid();
+
 
         mFirestore.collection("requests").addSnapshotListener(getActivity(), new EventListener<QuerySnapshot>() {
             @Override
@@ -80,9 +90,12 @@ public class Requests extends Fragment {
 
                     }
                 }
-
-
             }
         });
     }
+
+    public void callParentMethod(){
+        getActivity().onBackPressed();
+    }
+
 }

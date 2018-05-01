@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -25,6 +26,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+
         setContentView(R.layout.activity_main);
 
         mAuth = FirebaseAuth.getInstance();
@@ -41,6 +45,10 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setupDrawerContent(nvDrawer);
+
+        FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
+        tx.replace(R.id.main_content, new Requests());
+        tx.commit();
     }
 
     @Override
@@ -76,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
         finish();
     }
 
+
     public void selectItemDrawer (MenuItem menuItem) {
         Fragment myFragment = null;
         Class fragmentClass = null;
@@ -85,9 +94,6 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.nav_users:
                 fragmentClass = Users.class;
-                break;
-            case R.id.nav_settings:
-                fragmentClass = settings.class;
                 break;
             default:
                 fragmentClass = Requests.class;
@@ -103,6 +109,7 @@ public class MainActivity extends AppCompatActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.main_content, myFragment).commit();
         menuItem.setChecked(true);
+
         setTitle(menuItem.getTitle());
         mDrawerLayout.closeDrawers();
 
@@ -127,5 +134,9 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    @Override
+    public void onBackPressed() {
+
+    }
 
 }
